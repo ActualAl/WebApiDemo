@@ -39,5 +39,14 @@ namespace MvcApiDemo.Api
         {
             throw new NotImplementedException();
         }
+
+        public HttpResponseMessage PostCustomer(Customer item)
+        {
+            item = CustomerRespository.Add(item);
+            var response = Request.CreateResponse<Customer>(HttpStatusCode.Created, item);
+            string uri = Url.Link("DefaultApi", new { id = item.Id });
+            response.Headers.Location = new Uri(uri);
+            return response;
+        }
     }
 }

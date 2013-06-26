@@ -12,6 +12,7 @@ using MvcApiDemo;
 using System.Threading;
 using System.Net;
 using MvcApiDemoCore;
+using System.Net.Http.Formatting;
 
 namespace MvcApiDemoTests
 {
@@ -40,19 +41,36 @@ namespace MvcApiDemoTests
         }
 
         [TestMethod]
-        public void GivenUrlOfApiSlashCustomers_WhenApiCalled_Returns200()
+        public void GivenGetRequestToApiSlashCustomers_WhenApiCalled_Returns200WithData()
         {
             //Given
             var url = "http://tests.com/api/customers";
             var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Get };
 
             //When 
-            HttpResponseMessage response = _client.SendAsync(request, new CancellationTokenSource().Token).Result;
+            var response = _client.SendAsync(request, new CancellationTokenSource().Token).Result;
             var result = (EnumerableQuery<Customer>)response.Content.ReadAsAsync<object>().Result;
 
             //Then
             Assert.AreEqual(3, result.Count());
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void GivenPostRequestToApiSlashCustomers_WhenApiCalled_ReturnsCreated()
+        {
+            //Given
+            var url = "http://tests.com/api/customers";
+            var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Post };
+            var customer = new Customer { Id = 4, Forename = "New", Surname = "Customer", DateOfBirth = new DateTime(1974, 2, 1), Title = "Mr"};
+
+            //When
+            //var response = _client.SendAsync(request, new CancellationTokenSource().Token).Result;
+            var response = _client.PostAsync<Customer>(url, customer, new JsonMediaTypeFormatter(), new CancellationTokenSource().Token).Result;
+
+            //Then
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual(response.Headers.Location.LocalPath, "/api/customers/4");
         }
     }
 }

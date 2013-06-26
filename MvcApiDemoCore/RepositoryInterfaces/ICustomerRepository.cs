@@ -11,5 +11,6 @@ namespace MvcApiDemoCore
         IQueryable<Customer> All();
         Customer ById(int id);
         void Delete(int id);
+        Customer Add(Customer customer);
     }
 }

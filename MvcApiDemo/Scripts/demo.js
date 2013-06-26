@@ -1,31 +1,51 @@
 ﻿(function ($) {
 
-    var CustomersController = function (el) {
+    var CustomersController = function (dependencies) {
         var self = this;
-        self.el = $(el);
+        var dataRepository = dependencies.dataRepository;
+        var errorHandler = dependencies.errorHandler;
+        var customersView = dependencies.customersView;
 
-        function formatItem (item) {
+        self.loadCustomers = function () {
+            dataRepository.getCustomers().then(customersView.showCustomers, errorHandler.handleApiError);
+        }
+
+        self.loadCustomerById = function (id) {
+            dataRepository.getCustomerById(id).then(customersView.showCustomer, errorHandler.handleApiError);
+        }
+    };
+
+    var CustomersView = function (listElementId) {
+        var self = this;
+
+        var listElement = $(listElementId);
+
+        function formatItem(item) {
             return item.Forename + ' ' + item.Surname;
         }
 
         self.showCustomers = function (data) {
             console.log(data);
-            $.each(data, function (key, item) {
-                $('<li>', { text: formatItem(item)}).appendTo(self.el);
-            });
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var elem = $('<li>', { text: formatItem(item) });
+                elem.on('click', {id: item.Id}, function (event) {
+                    console.log('custId: ' + event.data.id);
+                    $(document).trigger('loadCustomer', [event.data.id]);
+                });
+                elem.appendTo(listElement);
+            };
         };
 
         self.showCustomer = function (data) {
             alert(data.Forename + ' ' + data.Surname);
-            //console.log(data);
         };
-    };
+    }
 
     var DataRepository = function (dataContext) {
         var self = this;
 
         self.getCustomers = function () {
-            //var customersQuery = dataContext.fetch('/Home/GetCustomers');
             var customersQuery = dataContext.fetch('/api/customers');
             return customersQuery;
         };
@@ -56,9 +76,15 @@
         };
     };
 
-    var errorHanlder = new ErrorHandler();
-    var dataRepository = new DataRepository(new DataClient());
-    var customersController = new CustomersController('#customerList');
-    dataRepository.getCustomers().then(customersController.showCustomers, errorHanlder.handleApiError);
-    dataRepository.getCustomerById(1).then(customersController.showCustomer, errorHanlder.handleApiError);
+    
+    var dataClient = new DataClient();
+    var customersController = new CustomersController({
+        errorHandler: new ErrorHandler(),
+        dataRepository: new DataRepository(dataClient),
+        customersView: new CustomersView('#customerList')
+    });
+    $(document).on('loadCustomer', function (evt, id) {
+        customersController.loadCustomerById(id);
+    });
+    customersController.loadCustomers();
 })($);

@@ -30,6 +30,12 @@ namespace MvcApiDemoRepository
         {
             
         }
+        
+        public Customer Add(Customer customer)
+        {
+            customer.Id = 4;
+            return customer;
+        }
     }
     
 }
