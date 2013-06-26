@@ -1,11 +1,23 @@
 ﻿(function ($) {
 
-    var CustomerList = function (el) {
+    var CustomersController = function (el) {
         var self = this;
         self.el = $(el);
 
-        self.setData = function (results) {
-            console.log(results);
+        function formatItem (item) {
+            return item.Forename + ' ' + item.Surname;
+        }
+
+        self.showCustomers = function (data) {
+            console.log(data);
+            $.each(data, function (key, item) {
+                $('<li>', { text: formatItem(item)}).appendTo(self.el);
+            });
+        };
+
+        self.showCustomer = function (data) {
+            alert(data.Forename + ' ' + data.Surname);
+            //console.log(data);
         };
     };
 
@@ -13,23 +25,26 @@
         var self = this;
 
         self.getCustomers = function () {
-            var customersQuery = dataContext.fetch('/Home/GetCustomers');
+            //var customersQuery = dataContext.fetch('/Home/GetCustomers');
+            var customersQuery = dataContext.fetch('/api/customers');
             return customersQuery;
+        };
+
+        self.getCustomerById = function (id) {
+            var customerQuery = dataContext.fetch('/api/customers/' + id);
+            return customerQuery;
         };
     };
 
     var DataClient = function () {
         var self = this;
 
-        var response = function (r) {
+        var reply = function (r) {
             return r;
-            if (r.Success == true) {
-                return r;
-            }
         };
 
         self.fetch = function (url) {
-            return $.get(url).pipe(response);
+            return $.get(url).then(reply)
         };
     };
 
@@ -43,6 +58,7 @@
 
     var errorHanlder = new ErrorHandler();
     var dataRepository = new DataRepository(new DataClient());
-    var customersList = new CustomerList('#customerList');
-    dataRepository.getCustomers().then(customersList.setData, errorHanlder.handleApiError);
+    var customersController = new CustomersController('#customerList');
+    dataRepository.getCustomers().then(customersController.showCustomers, errorHanlder.handleApiError);
+    dataRepository.getCustomerById(1).then(customersController.showCustomer, errorHanlder.handleApiError);
 })($);
