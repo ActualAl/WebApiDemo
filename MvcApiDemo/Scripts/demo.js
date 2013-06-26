@@ -8,29 +8,16 @@
             //This shoild build out the results on the el
             console.log(results);
         };
-    }
+    };
 
-    var DataRepository = function () {
-
+    var DataRepository = function (dataContext) {
         var self = this;
 
         self.GET_CUSTOMERS_URL = '/Home/GetCustomers';
 
-        self.context;
-
-        var initContext = function () {
-            self.context = new DataContext();
-        }
-
-        var disposeContext = function () {
-            self.context = undefined;
-        }
-        
         self.getCustomers = function () {
-            initContext();
-            var customers = self.context.fetch(self.GET_CUSTOMERS_URL);
-            disposeContext();
-            return customers;
+            var customersQuery = dataContext.fetch(self.GET_CUSTOMERS_URL);
+            return customersQuery;
         };
     };
 
@@ -38,18 +25,15 @@
         var self = this;
 
         self.fetch = function (url) {
-            $.get(url).then(
+            var fetcher = $.get(url).pipe(
                 function (response) {
                     return response;
-                },
-                function () {
-                    return {};
-                })
+                });
+            return fetcher;
         };
-    }
+    };
 
-    var dataRepository = new DataRepository();
+    var dataRepository = new DataRepository(new DataContext());
     var customersList = new CustomerList('#customerList');
-    dataRepository.getCustomers().then(customersList.setData());
-    //customersList.setData(customers);
+    dataRepository.getCustomers().then(customersList.setData);
 })($);
