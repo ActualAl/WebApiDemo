@@ -5,7 +5,6 @@
         self.el = $(el);
 
         self.setData = function (results) {
-            //This shoild build out the results on the el
             console.log(results);
         };
     };
@@ -13,27 +12,37 @@
     var DataRepository = function (dataContext) {
         var self = this;
 
-        self.GET_CUSTOMERS_URL = '/Home/GetCustomers';
-
         self.getCustomers = function () {
-            var customersQuery = dataContext.fetch(self.GET_CUSTOMERS_URL);
+            var customersQuery = dataContext.fetch('/Home/GetCustomers');
             return customersQuery;
         };
     };
 
-    var DataContext = function () {
+    var DataClient = function () {
         var self = this;
 
+        var response = function (r) {
+            return r;
+            if (r.Success == true) {
+                return r;
+            }
+        };
+
         self.fetch = function (url) {
-            var fetcher = $.get(url).pipe(
-                function (response) {
-                    return response;
-                });
-            return fetcher;
+            return $.get(url).pipe(response);
         };
     };
 
-    var dataRepository = new DataRepository(new DataContext());
+    var ErrorHandler = function () {
+        var self = this;
+
+        self.handleApiError = function (details) {
+            console.log(this.url + ' failed with status: ' + details.status);
+        };
+    };
+
+    var errorHanlder = new ErrorHandler();
+    var dataRepository = new DataRepository(new DataClient());
     var customersList = new CustomerList('#customerList');
-    dataRepository.getCustomers().then(customersList.setData);
+    dataRepository.getCustomers().then(customersList.setData, errorHanlder.handleApiError);
 })($);

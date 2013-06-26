@@ -1,4 +1,5 @@
-﻿using MvcApiDemoCore;
+﻿using MvcApiDemo.Models;
+using MvcApiDemoCore;
 using MvcApiDemoRepository;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,9 @@ namespace MvcApiDemo.Controllers
         [HttpGet]
         public JsonResult GetCustomers()
         {
+            return Json(ApiResponse<Object>.Fail("badness"), JsonRequestBehavior.AllowGet);
             var customers = CustomerRespository.All();
-            return Json(customers, JsonRequestBehavior.AllowGet);
+            return Json(ApiResponse<IQueryable<Customer>>.Ok(customers), JsonRequestBehavior.AllowGet);
         }
     }
 }
