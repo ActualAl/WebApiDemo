@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApiDemo", "MvcApiDemo\MvcApiDemo.csproj", "{9F31DD1A-12E8-437C-8D8B-85E0DD8E8F4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApiDemoCore", "MvcApiDemoCore\MvcApiDemoCore.csproj", "{150B3297-80A1-4008-B4C5-9CE125433FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApiDemoRepository", "MvcApiDemoRepository\MvcApiDemoRepository.csproj", "{7EDDD9A6-6C3D-4471-ABB2-AF55A8A62F0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{9F31DD1A-12E8-437C-8D8B-85E0DD8E8F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F31DD1A-12E8-437C-8D8B-85E0DD8E8F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F31DD1A-12E8-437C-8D8B-85E0DD8E8F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{150B3297-80A1-4008-B4C5-9CE125433FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{150B3297-80A1-4008-B4C5-9CE125433FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{150B3297-80A1-4008-B4C5-9CE125433FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{150B3297-80A1-4008-B4C5-9CE125433FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EDDD9A6-6C3D-4471-ABB2-AF55A8A62F0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EDDD9A6-6C3D-4471-ABB2-AF55A8A62F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EDDD9A6-6C3D-4471-ABB2-AF55A8A62F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EDDD9A6-6C3D-4471-ABB2-AF55A8A62F0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -115,6 +115,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\demo.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -136,6 +138,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcApiDemoCore\MvcApiDemoCore.csproj">
+      <Project>{150b3297-80a1-4008-b4c5-9ce125433fa4}</Project>
+      <Name>MvcApiDemoCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcApiDemoRepository\MvcApiDemoRepository.csproj">
+      <Project>{7eddd9a6-6c3d-4471-abb2-af55a8a62f0c}</Project>
+      <Name>MvcApiDemoRepository</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
