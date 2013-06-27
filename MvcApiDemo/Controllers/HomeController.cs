@@ -27,6 +27,16 @@ namespace MvcApiDemo.Controllers
             return View();
         }
 
+        public ActionResult TheGood()
+        {
+            return View();
+        }
+
+        public ActionResult TheBadAndTheUgly()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult GetCustomers()
         {

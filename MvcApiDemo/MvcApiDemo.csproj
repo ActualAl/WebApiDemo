@@ -117,7 +117,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\demo.js" />
+    <Content Include="Scripts\theBadAndTheUgly.js" />
+    <Content Include="Scripts\theGood.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -149,6 +150,12 @@
       <Project>{7eddd9a6-6c3d-4471-abb2-af55a8a62f0c}</Project>
       <Name>MvcApiDemoRepository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\TheGood.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\TheBadAndTheUgly.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

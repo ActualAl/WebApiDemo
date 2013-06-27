@@ -1,17 +1,17 @@
 ﻿(function ($) {
-
+    //<View Specific>
     var CustomersController = function (dependencies) {
         var self = this;
-        var dataRepository = dependencies.dataRepository;
+        var customerRepository = dependencies.customerRepository;
         var errorHandler = dependencies.errorHandler;
         var customersView = dependencies.customersView;
 
         self.loadCustomers = function () {
-            dataRepository.getCustomers().then(customersView.showCustomers, errorHandler.handleApiError);
+            customerRepository.getCustomers().then(customersView.showCustomers, errorHandler.handleApiError);
         }
 
         self.loadCustomerById = function (id) {
-            dataRepository.getCustomerById(id).then(customersView.showCustomer, errorHandler.handleApiError);
+            customerRepository.getCustomerById(id).then(customersView.showCustomer, errorHandler.handleApiError);
         }
     };
 
@@ -42,19 +42,21 @@
         };
     }
 
-    var DataRepository = function (dataContext) {
+    var CustomerRepository = function (dataContext) {
         var self = this;
 
         self.getCustomers = function () {
-            var customersQuery = dataContext.fetch('/api/customers');
-            return customersQuery;
+            return dataContext.fetch('/api/customers');
         };
 
         self.getCustomerById = function (id) {
-            var customerQuery = dataContext.fetch('/api/customers/' + id);
-            return customerQuery;
+            return dataContext.fetch('/api/customers/' + id);
         };
     };
+    //</View Specific>
+
+    //<Re-usable>
+   
 
     var DataClient = function () {
         var self = this;
@@ -76,11 +78,13 @@
         };
     };
 
+    //</Re-usable>
+
     
     var dataClient = new DataClient();
     var customersController = new CustomersController({
         errorHandler: new ErrorHandler(),
-        dataRepository: new DataRepository(dataClient),
+        customerRepository: new CustomerRepository(dataClient),
         customersView: new CustomersView('#customerList')
     });
     $(document).on('loadCustomer', function (evt, id) {

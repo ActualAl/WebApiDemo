@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <script type="text/javascript" src="~/Scripts/jquery.js"></script>
+
 </head>
 <body>
     <div>
         @RenderBody()
+        @Html.ActionLink("Home", "Index")
         @RenderSection("scripts", required: false)
     </div>
 </body>
