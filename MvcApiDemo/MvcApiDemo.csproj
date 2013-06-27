@@ -117,9 +117,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\customer\customerMvc.js" />
+    <Content Include="Scripts\jasmine.js" />
+    <Content Include="Scripts\specs\customer\customerMvcSpec.js" />
+    <Content Include="Scripts\specs\theGoodSpec.js" />
+    <Content Include="Scripts\specs\utils\dataClientSpec.js" />
+    <Content Include="Scripts\specs\utils\errorHandlerSpec.js" />
     <Content Include="Scripts\theBadAndTheUgly.js" />
-    <Content Include="Scripts\theGood.js" />
+    <Content Include="Scripts\customer\customerPage.js" />
     <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\utils\dataClient.js" />
+    <Content Include="Scripts\utils\errorHandler.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

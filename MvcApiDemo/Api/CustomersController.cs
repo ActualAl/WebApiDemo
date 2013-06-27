@@ -42,6 +42,10 @@ namespace MvcApiDemo.Api
 
         public HttpResponseMessage PostCustomer(Customer item)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
             item = CustomerRespository.Add(item);
             var response = Request.CreateResponse<Customer>(HttpStatusCode.Created, item);
             string uri = Url.Link("DefaultApi", new { id = item.Id });
