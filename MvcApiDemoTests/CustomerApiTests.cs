@@ -72,5 +72,23 @@ namespace MvcApiDemoTests
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual(response.Headers.Location.LocalPath, "/api/customers/4");
         }
+
+        [TestMethod]
+        public void GivenPostRequestToApiSlashCustomers_WhenApiCalled_ReturnsStatus422AndErrorsOnInvalid()
+        {
+            //Given
+            var url = "http://tests.com/api/customers";
+            var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Post };
+            var customer = new Customer { Id = 4, Forename = "", Surname = "Customer", DateOfBirth = new DateTime(1974, 2, 1), Title = "Mr" };
+
+            //When
+            var response = _client.PostAsync<Customer>(url, customer, new JsonMediaTypeFormatter(), new CancellationTokenSource().Token).Result;
+            HttpError responseContent = ((System.Net.Http.ObjectContent)(response.Content)).Value as HttpError;
+
+            //Then
+            Assert.AreEqual((HttpStatusCode)422, response.StatusCode);
+            Assert.IsNotNull(responseContent["Message"]);
+            Assert.IsNotNull(responseContent["ModelState"]);
+        }
     }
 }

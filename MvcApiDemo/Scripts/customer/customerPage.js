@@ -4,7 +4,7 @@
         var customersController = new CustomersController({
             errorHandler: new ErrorHandler(),
             customerRepository: new CustomerRepository(dataClient),
-            customersView: new CustomersView('#customerList')
+            customersView: new CustomersView($('#customerList'))
         });
         $(document).on('loadCustomer', function (evt, id) {
             customersController.loadCustomerById(id);

@@ -1,6 +1,192 @@
 ﻿/// <reference path="../../jquery.js" />
 /// <reference path="../../customer/customerMvc.js" />
 describe("CustomersController", function () {
+    var _tObj;
+    var dependencies;
+
+    afterEach(function () {
+        _tObj = undefined;
+        dependencies = undefined;
+    });
+
+    describe("contsructor", function () {
+        it("creates object", function () {
+            //Given
+            dependencies = {
+                customerRepository: {},
+                errorHandler: {},
+                customersView: {}
+            };
+            //When
+            _tObj = new CustomersController(dependencies);
+
+            //Then
+            expect(_tObj).not.toBe(undefined);
+        });
+    });
+
+    describe("function", function () {
+        describe("loadCustomers", function () {
+            it("calls getCustomers and then handleApiError on fail", function () {
+                //Given
+                var stubCustomersRepository = {
+                    getCustomers: function () { }
+                };
+                var stubCustomersView = {
+                    showCustomers: function () { }
+                };
+                var stubErrorHandler = {
+                    handleApiError: function () { }
+                };
+
+                var dependencies = {
+                    customerRepository: stubCustomersRepository,
+                    errorHandler: stubErrorHandler,
+                    customersView: stubCustomersView
+                };
+
+                spyOn(stubCustomersRepository, "getCustomers").andCallFake(function (req) {
+                    var stubDeffered = $.Deferred();
+                    stubDeffered.reject();//This rejection should cause the second 'then' parameter to be called
+                    return stubDeffered.promise();
+                });
+
+                spyOn(stubErrorHandler, "handleApiError");
+                spyOn(stubCustomersView, "showCustomers");
+
+                //When
+                _tObj = new CustomersController(dependencies);
+                _tObj.loadCustomers();
+
+                //Then
+                expect(stubCustomersRepository.getCustomers).toHaveBeenCalled();
+                expect(stubErrorHandler.handleApiError).toHaveBeenCalled();
+                expect(stubCustomersView.showCustomers).not.toHaveBeenCalled();
+            });
+        });
+
+        describe("loadCustomers", function () {
+            it("calls getCustomers and then showCustomers on success", function () {
+                //Given
+                var stubCustomersRepository = {
+                    getCustomers: function () { }
+                };
+                var stubCustomersView = {
+                    showCustomers: function () { }
+                };
+                var stubErrorHandler = {
+                    handleApiError: function () { }
+                };
+
+                var dependencies = {
+                    customerRepository: stubCustomersRepository,
+                    errorHandler: stubErrorHandler,
+                    customersView: stubCustomersView
+                };
+
+                spyOn(stubCustomersRepository, "getCustomers").andCallFake(function (req) {
+                    var stubDeffered = $.Deferred();
+                    stubDeffered.resolve();//This resolve should cause the first 'then' parameter to be called
+                    return stubDeffered.promise();
+                });
+
+                spyOn(stubErrorHandler, "handleApiError");
+                spyOn(stubCustomersView, "showCustomers");
+
+                //When
+                _tObj = new CustomersController(dependencies);
+                _tObj.loadCustomers();
+
+                //Then
+                expect(stubCustomersRepository.getCustomers).toHaveBeenCalled();
+                expect(stubErrorHandler.handleApiError).not.toHaveBeenCalled();
+                expect(stubCustomersView.showCustomers).toHaveBeenCalled();
+            });
+        });
+
+        describe("loadCustomerById", function () {
+            it("calls getCustomerById and then handleApiError on fail", function () {
+                //Given
+                var stubCustomersRepository = {
+                    getCustomerById: function () { }
+                };
+                var stubCustomersView = {
+                    showCustomer: function (id) { }
+                };
+                var stubErrorHandler = {
+                    handleApiError: function () { }
+                };
+
+                var dependencies = {
+                    customerRepository: stubCustomersRepository,
+                    errorHandler: stubErrorHandler,
+                    customersView: stubCustomersView
+                };
+
+                spyOn(stubCustomersRepository, "getCustomerById").andCallFake(function (req) {
+                    var stubDeffered = $.Deferred();
+                    stubDeffered.reject();//This rejection should cause the second 'then' parameter to be called
+                    return stubDeffered.promise();
+                });
+
+                spyOn(stubErrorHandler, "handleApiError");
+                spyOn(stubCustomersView, "showCustomer");
+
+                var id = 90210;
+
+                //When
+                _tObj = new CustomersController(dependencies);
+                _tObj.loadCustomerById(id);
+
+                //Then
+                expect(stubCustomersRepository.getCustomerById).toHaveBeenCalled();
+                expect(stubErrorHandler.handleApiError).toHaveBeenCalled();
+                expect(stubCustomersView.showCustomer).not.toHaveBeenCalled();
+            });
+        });
+
+        describe("loadCustomerById", function () {
+            it("calls getCustomerById and then showCustomer on success", function () {
+                //Given
+                var stubCustomersRepository = {
+                    getCustomerById: function () { }
+                };
+                var stubCustomersView = {
+                    showCustomer: function () { }
+                };
+                var stubErrorHandler = {
+                    handleApiError: function () { }
+                };
+
+                var dependencies = {
+                    customerRepository: stubCustomersRepository,
+                    errorHandler: stubErrorHandler,
+                    customersView: stubCustomersView
+                };
+
+                spyOn(stubCustomersRepository, "getCustomerById").andCallFake(function (req) {
+                    var stubDeffered = $.Deferred();
+                    stubDeffered.resolve();//This resolve should cause the first 'then' parameter to be called
+                    return stubDeffered.promise();
+                });
+
+                spyOn(stubErrorHandler, "handleApiError");
+                spyOn(stubCustomersView, "showCustomer");
+
+                var id = 90210
+
+                //When
+                _tObj = new CustomersController(dependencies);
+                _tObj.loadCustomerById(id);
+
+                //Then
+                expect(stubCustomersRepository.getCustomerById).toHaveBeenCalled();
+                expect(stubErrorHandler.handleApiError).not.toHaveBeenCalled();
+                expect(stubCustomersView.showCustomer).toHaveBeenCalled();
+            });
+        });
+
+    });
 
 });
 
@@ -11,7 +197,7 @@ describe("CustomersView", function () {
         _tObj = undefined;
     });
 
-    describe("contructor", function () {
+    describe("constructor", function () {
         it("creates object", function () {
             //Given
             var el = "#anElement";
@@ -24,26 +210,67 @@ describe("CustomersView", function () {
         });
     });
 
-    describe("functions", function () {
+    describe("function", function () {
 
-        var el = "#anElement";
+        var el; 
+        var data;
 
         beforeEach(function () {
+            el = $("<ul id='#anElement'></ul>");
             _tObj = new CustomersView(el);
+            data = undefined;
         });
 
-        describe("showCUstomers", function () {
-            it("does stuff", function () {
+        describe("showCustomers", function () {
+            it("builds customer list", function () {
                 //Given
-                var el = "#anElement";
+                data = [
+                    { Id: 1, Forename: "Alex", Surname: "Hardman" },
+                    { Id: 2, Forename: "Chris", Surname: "Thompson" }
+                ];
+                
+                //When
+                _tObj.showCustomers(data);
+
+                //Then 
+                expect(_tObj.listElement.find('li').length).toEqual(data.length);
+                expect(_tObj.listElement.find('li')[0].outerText).toBe('Alex Hardman');
+                expect(_tObj.listElement.find('li')[1].outerText).toBe('Chris Thompson');
+            });
+        });
+
+        describe("showCustomers", function () {
+            it("adds customer items that trigger 'loadCustomer' event when clicked", function () {
+                //Given
+                var id = 90210;
+                var eventType = 'loadCustomer';
+
+                data = [
+                    { Id: id, Forename: "Alex", Surname: "Hardman" }
+                ];
+
+                var flag;
+
+                var triggeredType;
+                var triggeredData;
+
+                //Set up listener for the eventType --> 'loadCustomer'
+                $(document).on(eventType, function () {
+                    triggeredType = arguments[0].type;
+                    triggeredData = arguments[1];
+                });
 
                 //When
+                _tObj.showCustomers(data);
+                _tObj.listElement.find('li').first().click();
+                //Then 
+                expect(_tObj.listElement.find('li').length).toEqual(data.length);
 
+                expect(triggeredType).toBe(eventType);
+                expect(triggeredData).toBe(id);
             });
         });
     });
-
-    
 });
 
 describe("CustomerRespository", function () {

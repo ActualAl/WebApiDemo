@@ -16,22 +16,20 @@
 var CustomersView = function (listElementId) {
     var self = this;
 
-    var listElement = $(listElementId);
+    self.listElement = listElementId;
 
     function formatItem(item) {
         return item.Forename + ' ' + item.Surname;
     }
 
     self.showCustomers = function (data) {
-        console.log(data);
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             var elem = $('<li>', { text: formatItem(item) });
             elem.on('click', { id: item.Id }, function (event) {
-                console.log('custId: ' + event.data.id);
                 $(document).trigger('loadCustomer', [event.data.id]);
             });
-            elem.appendTo(listElement);
+            elem.appendTo(self.listElement);
         };
     };
 
