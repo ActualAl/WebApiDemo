@@ -60,5 +60,27 @@ namespace MvcApiDemo.Api
             response.Headers.Location = new Uri(uri);
             return response;
         }
+
+        public HttpResponseMessage PutCustomer(Customer customer)
+        {
+            if (customer == null)
+            {
+                var httpError = new HttpError("customer is null");
+                var errorResponse = Request.CreateErrorResponse((HttpStatusCode)422, httpError);
+                throw new HttpResponseException(errorResponse);
+            }
+            if (!ModelState.IsValid)
+            {
+                var httpError = new HttpError(ModelState, true);
+                var errorResponse = Request.CreateErrorResponse((HttpStatusCode)422, httpError);
+                throw new HttpResponseException(errorResponse); //Rails now uses 422
+            }
+            customer = CustomerRespository.Add(customer);
+            var response = Request.CreateResponse<Customer>(HttpStatusCode.OK, customer);
+            string uri = Url.Link("DefaultApi", new { id = customer.Id });
+            response.Headers.Location = new Uri(uri);
+            return response;
+
+        }
     }
 }
