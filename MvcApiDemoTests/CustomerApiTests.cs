@@ -62,7 +62,7 @@ namespace MvcApiDemoTests
             //Given
             var url = "http://tests.com/api/customers";
             var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Post };
-            var customer = new Customer { Id = 4, Forename = "New", Surname = "Customer", DateOfBirth = new DateTime(1974, 2, 1), Title = "Mr"};
+            var customer = new Customer { Id = 4, Forename = "New", Surname = "Custo", DateOfBirth = new DateTime(1974, 2, 1), Title = "Mr"};
 
             //When
             //var response = _client.SendAsync(request, new CancellationTokenSource().Token).Result;
