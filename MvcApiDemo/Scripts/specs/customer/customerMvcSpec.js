@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../jquery.js" />
 /// <reference path="../../customer/customerMvc.js" />
-describe("CustomersController", function () {
+describe("js CustomersController", function () {
     var _tObj;
     var dependencies;
 
@@ -22,6 +22,39 @@ describe("CustomersController", function () {
 
             //Then
             expect(_tObj).not.toBe(undefined);
+        });
+
+        it("sets up loadCustomer listener to call 'loadCustomer'", function () {
+            //Given
+
+            var stubRepository = {
+                getCustomerById: function (id) {
+                    return [];
+                }
+            };
+
+            dependencies = {
+                customerRepository: stubRepository,
+                errorHandler: {},
+                customersView: {
+                    showCustomer: function () { }
+                },
+                document: {}
+            };
+
+            spyOn(stubRepository, "getCustomerById").andCallFake(function (req) {
+                var stubDeferred = $.Deferred();
+                stubDeferred.resolve();
+                return stubDeferred.promise();
+            });
+
+            //When
+            _tObj = new CustomersController(dependencies);
+            $(dependencies.document).trigger('loadCustomer', 1);
+
+            //Then
+            expect(stubRepository.getCustomerById).toHaveBeenCalled();
+
         });
     });
 
@@ -190,7 +223,7 @@ describe("CustomersController", function () {
 
 });
 
-describe("CustomersView", function () {
+describe("js CustomersView", function () {
     var _tObj;
 
     afterEach(function () {
@@ -273,7 +306,7 @@ describe("CustomersView", function () {
     });
 });
 
-describe("CustomerRespository", function () {
+describe("js CustomerRespository", function () {
     var _tObj,
         _mockContext;
 

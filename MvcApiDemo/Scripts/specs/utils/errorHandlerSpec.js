@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../utils/errorHandler.js" />
 
-describe("ErrorHandler", function () {
+describe("js ErrorHandler", function () {
 
     var _tObj;
 

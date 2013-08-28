@@ -4,6 +4,12 @@
     var errorHandler = dependencies.errorHandler;
     var customersView = dependencies.customersView;
 
+    var init = function() {
+        $(dependencies.document).on('loadCustomer', function (evt, id) {
+            self.loadCustomerById(id);
+        });
+    }
+
     self.loadCustomers = function () {
         customerRepository.getCustomers().then(customersView.showCustomers, errorHandler.handleApiError);
     }
@@ -11,6 +17,8 @@
     self.loadCustomerById = function (id) {
         customerRepository.getCustomerById(id).then(customersView.showCustomer, errorHandler.handleApiError);
     }
+
+    init();
 };
 
 var CustomersView = function (listElementId) {

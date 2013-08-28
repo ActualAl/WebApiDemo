@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../jquery.js" />
 /// <reference path="../../utils/dataClient.js" />
-describe("DataClient", function () {
+describe("js DataClient", function () {
 
     var _tObj;
 
